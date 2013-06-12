@@ -1,0 +1,24 @@
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <SolutionDir>$(MSBuildProjectDirectory)</SolutionDir>
+    <Configuration>Debug</Configuration>
+    <Platform>Any CPU</Platform>
+    <OutputPath Condition=" '$(OutputPath)'=='' ">$(MSBuildProjectDirectory)\bin\</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Projects Include="$(MSBuildProjectDirectory)\CustomTypeDescriptors\CustomTypeDescriptors.csproj" />
+    <Projects Include="$(MSBuildProjectDirectory)\CustomTypeDescriptors.Tests\CustomTypeDescriptors.Tests.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <NUnitConsoleExe Include="$(MSBuildProjectDirectory)\packages\NUnit.Runners*\**\nunit-console.exe"></NUnitConsoleExe>
+  </ItemGroup>
+  <Target Name="Build" BeforeTargets="Clean">
+    <MSBuild Projects="@(Projects)" Properties="Configuration=$(Configuration);Platform=$(Platform);OutputPath=$(OutputPath)" />
+    <Message Text="Running NUNit..." />
+    <Exec Command="@(NUnitConsoleExe -> '%(FullPath)') $(OutputPath)\CustomTypeDescriptors.Tests.dll /framework:net-4.5" />
+  </Target>
+  <Target Name="RunUnitTests">
+    <Message Text="Running NUNit..." />
+    <Exec Command="@(NUnitConsoleExe -> '%(FullPath)') $(OutputPath)\CustomTypeDescriptors.Tests.dll /framework:net-4.5 /out:nunit-testResults.txt /xml:nunit-testResult.xml" />
+  </Target>
+</Project>
