@@ -1,0 +1,5 @@
+TestResult.xml
+/packages/*
+!repositories.config
+bin
+obj
